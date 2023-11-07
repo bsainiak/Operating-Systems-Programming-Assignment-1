@@ -27,10 +27,51 @@ int main () {
     int *table;
     int loop_count = 5;
 
-    // Make shared process between prod and cons
+    //Shared memory
     shared_memory_file_descriptor = shm_open(name, O_CREAT | O_RDWR, 0666);
 
-    // Set the size of the mem space
+    
     ftruncate(shared_memory_file_descriptor,sizeof(int));
 
+    table = (int *)mmap(0,sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED, shared_memory_file_descriptor, 0);
+
+    fill = sem_open(fill_semaphore, O_CREAT,0666,0);
+    
+    available = sem_open(avail_sempahore, O_CREAT, 0666, 3);
+
+    mutex = sem_open(mutex_semaphore,O_CREAT,0666,1);
+
+    int value = -1;
+    //decrements the loop_count so the process doesn't run forever
+    while(loop_count--){
+        //prevents deadlock
+        sem_wait(fill);
+        sleep(rand()%2+1);
+        sem_wait(mutex);
+        (* table)--; //critical section
+        sem_post(mutex);
+        std::cout << "Consumer: Consumes an item. There are " << *table << " item(s).\n";
+        sem_post(available);
+    }
+    std::cout << "----------------------------------------------\n";
+    std::cout << "CONSUMER: Cycle limit. " << *table << " product(s) are left.\n";
+    std::cout << "----------------------------------------------\n";
+    
+    
+    sem_close(fill);
+    sem_close(available);
+    sem_close(mutex);
+    sem_unlink(fill_semaphore);
+    sem_unlink(avail_sempahore);
+    sem_unlink(mutex_semaphore);
+
+    munmap(table, sizeof(int));
+    close(shared_memory_file_descriptor);
+    shm_unlink(name);
+
+    return 0;
+}
+
+void PrintSemaphoreValue(std::string name, sem_t *semaphore, int &value) {
+    std::cout << name << " value: " << sem_getvalue(semaphore, &value) << std::endl;
 }
