@@ -1,0 +1,7 @@
+Brandon Sainiak Producer Consumer Documentation
+
+When creating this project I first worked on establishing a shared memory space for the two processes.
+This consisted of the inclusion of const character pointers that would be shared between the processes, 3 semaphores, a shared memory descriptor, and a table used for the shared memory
+After the declaration of the variables I opened the shared memory space using shm_open and truncated the size.
+I then mapped the table to the two processes and initialized the 3 semaphores.
+The three semaphores that I used were a fill semaphore, available semaphore, and mutex binary semaphore.

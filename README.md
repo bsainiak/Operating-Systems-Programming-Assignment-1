@@ -10,4 +10,4 @@ These processes are designed to run concurrently and should avoid data inconsist
 In order to run these processes you need to use the commands
 $ g++ producer.cpp -pthread -lrt -o producer
 $ g++ consumer.cpp -pthread -lrt -o consumer
-$ g++ ./producer & ./consumer &
+$ ./producer & ./consumer &

@@ -17,7 +17,7 @@
 int main () {
     const char *name = "Shared Memory";
     const char *fill_semaphore = "Full";
-    const char *avail_sempahore = "Available";
+    const char *avail_semaphore = "Available";
     const char *mutex_semaphore = "Mutex";
     const int MAX_TABLE_QUANTITY = 2;
     sem_t *fill, *available, *mutex;
@@ -36,7 +36,7 @@ int main () {
     //Initializes the semaphore
     fill = sem_open(fill_semaphore, O_CREAT,0666,0);
     
-    available = sem_open(avail_sempahore, O_CREAT, 0666, 3);
+    available = sem_open(avail_semaphore, O_CREAT, 0666, 3);
 
     mutex = sem_open(mutex_semaphore,O_CREAT,0666,1);
 
@@ -71,7 +71,7 @@ int main () {
     sem_close(available);
     sem_close(mutex);
     sem_unlink(fill_semaphore);
-    sem_unlink(avail_sempahore);
+    sem_unlink(avail_semaphore);
     sem_unlink(mutex_semaphore);
 
     
