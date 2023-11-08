@@ -20,6 +20,5 @@ $ g++ producer.cpp -pthread -lrt -o producer
 $ g++ consumer.cpp -pthread -lrt -o consumer
 $ ./producer & ./consumer &
 
-A typical output should look similar to this:
-![Alt text](Example Image.png)
+A typical output should look similar to the image Example Image.png
 
