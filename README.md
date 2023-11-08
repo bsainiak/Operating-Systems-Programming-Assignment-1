@@ -21,5 +21,5 @@ $ g++ consumer.cpp -pthread -lrt -o consumer
 $ ./producer & ./consumer &
 
 A typical output should look similar to this:
-![![Alt text](Example Image.png)]
+![Alt text](Example Image.png)
 
