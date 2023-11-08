@@ -15,6 +15,7 @@
     https://man7.org/linux/man-pages/man3/shm_open.3.html
 */
 int main () {
+    //initializes variables to be used when creating shared memory
     const char *name = "Shared Memory";
     const char *fill_semaphore = "Full";
     const char *avail_semaphore = "Available";
@@ -31,9 +32,10 @@ int main () {
     // Sets the size of the memory space
     ftruncate(shared_memory_file_descriptor,sizeof(int));
 
+    //Maps the processes
     table = (int *)mmap(0,sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED, shared_memory_file_descriptor, 0);
 
-    //Initializes the semaphore
+    //Initializes the semaphores
     fill = sem_open(fill_semaphore, O_CREAT,0666,0);
     
     available = sem_open(avail_semaphore, O_CREAT, 0666, 3);
@@ -45,13 +47,13 @@ int main () {
     while(loop_count--){
         sem_wait(available);
         sleep(rand()%2+1);
-        sem_wait(mutex);
+        sem_wait(mutex); //ensures mutual exclusion
         
         //limit table size
         if(*table < MAX_TABLE_QUANTITY){
             (* table)++;
             std::cout << "Producer: Produces an item. There are " << *table << " item(s).\n";
-            sem_post(mutex); 
+            sem_post(mutex); //frees the mutex lock
             sem_post(fill);
 
             if (*table == MAX_TABLE_QUANTITY){

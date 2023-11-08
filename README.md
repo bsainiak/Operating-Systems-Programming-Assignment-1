@@ -20,4 +20,25 @@ $ g++ producer.cpp -pthread -lrt -o producer
 $ g++ consumer.cpp -pthread -lrt -o consumer
 $ ./producer & ./consumer &
 
+A typical output should look similar to this:
+PRODUCER: Produce an item. There are 1 item(s).
+PRODUCER: Produce an item. There are 2 item(s).
+***   PRODUCER TABLE FULL   ***
+CONSUMER: Consume an item. There are 1 item(s).
+PRODUCER: Produce an item. There are 2 item(s).
+***   PRODUCER TABLE FULL   ***
+CONSUMER: Consume an item. There are 1 item(s).
+PRODUCER: Produce an item. There are 2 item(s).
+***   PRODUCER TABLE FULL   ***
+CONSUMER: Consume an item. There are 1 item(s).
+PRODUCER: Produce an item. There are 2 item(s).
+***   PRODUCER TABLE FULL   ***
+----------------------------------------------
+PRODUCER: Cycle limit. 2 product(s) are left.
+----------------------------------------------
+CONSUMER: Consume an item. There are 1 item(s).
+CONSUMER: Consume an item. There are 0 item(s).
+----------------------------------------------
+CONSUMER: Cycle limit. 0 product(s) are left.
+----------------------------------------------
 

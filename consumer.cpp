@@ -18,6 +18,7 @@
 void PrintSemaphoreValue(std::string name, sem_t *semaphore, int &value);
 
 int main () {
+    //initializes variables to be used with shared memory
     const char *name = "Shared Memory";
     const char *fill_semaphore = "Full";
     const char *avail_semaphore = "Available";
@@ -30,11 +31,13 @@ int main () {
     //Shared memory
     shared_memory_file_descriptor = shm_open(name, O_CREAT | O_RDWR, 0666);
 
-    
+    //sets the size of the shared memory
     ftruncate(shared_memory_file_descriptor,sizeof(int));
 
+    //maps the processes together
     table = (int *)mmap(0,sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED, shared_memory_file_descriptor, 0);
 
+    //Creates 3 semaphores to be used in the processes
     fill = sem_open(fill_semaphore, O_CREAT,0666,0);
     
     available = sem_open(avail_semaphore, O_CREAT, 0666, 3);
@@ -57,7 +60,7 @@ int main () {
     std::cout << "CONSUMER: Cycle limit. " << *table << " product(s) are left.\n";
     std::cout << "----------------------------------------------\n";
     
-    
+    //frees semaphores and shared memory
     sem_close(fill);
     sem_close(available);
     sem_close(mutex);

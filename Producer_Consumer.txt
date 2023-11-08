@@ -2,6 +2,17 @@ Brandon Sainiak Producer Consumer Documentation
 
 When creating this project I first worked on establishing a shared memory space for the two processes.
 This consisted of the inclusion of const character pointers that would be shared between the processes, 3 semaphores, a shared memory descriptor, and a table used for the shared memory
-After the declaration of the variables I opened the shared memory space using shm_open and truncated the size.
-I then mapped the table to the two processes and initialized the 3 semaphores.
+After the declaration of the variables I opened the shared memory space using shm_open and truncated the size. It was a challenge to understand how to open a shared memory space at first.
+I then mapped the table to the two processes and initialized the 3 semaphores. Mapping the table to the two different processes was a decent challenge to understand but I feel was important to learn
 The three semaphores that I used were a fill semaphore, available semaphore, and mutex binary semaphore.
+The fill semaphore was used to indicate when a value was produced and was available to be consumed.
+It also served as a condition to stop the consumer from consuming nothing.
+The available semaphore was used to indicate the amount of space that was available for in the table for data to be produced.
+The mutex semaphore was used as a bianry semaphore to implement mutual exclusion within the program.
+I felt using these semaphores was a good way to take what I've learned in lectures and apply it to a problem.
+After the semaphores were implemented the producer and consumer needed to have their individual loops implemented.
+For the producer I used sem_wait for the available and mutex semaphores in order to decrement them and enter the producer's critical section.
+After this I added a value to the table, printed a statement to indicate a value was produced, and then used sem_post to exit the critical section.
+When working with the consumer I set a maximum amount of times the consumer could loop to prevent the producer and consumer from executing an infinite number of times.
+I then used sem_wait on fill to ensure there was data to consume and sem_wait on mutex in order to enter the critical section.
+Overall this project was a good challenge and allowed me to understand how to use semaphores better.
